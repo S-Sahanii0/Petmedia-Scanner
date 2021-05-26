@@ -25,7 +25,10 @@ dependencies:
     sdk: flutter
 
   google_fonts: ^2.1.0
+  image_picker: ^0.7.5+2
 
+module:
+  androidX: true # Add this line.
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

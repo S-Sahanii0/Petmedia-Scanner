@@ -1,7 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -11,30 +22,11 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 100.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(width: 12.0,),
-                  Text(
-                    "Petmedia Scanner",
-                    style: GoogleFonts.sulphurPoint(
-                        textStyle: TextStyle(fontSize: 30)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image(image: AssetImage('assets/image 2.png')),
-                  ),
-                ],
-              ),
+              AppHeader(),
               SizedBox(
                 height: 30.0,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 24.0),
-                child: Image(
-                  image: AssetImage('assets/image 3.png'),
-                ),
-              ),
+              SelectImage(),
               Text(
                 "Select an image to scan",
                 style: GoogleFonts.sulphurPoint(
@@ -63,6 +55,71 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class AppHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(width: 12.0,),
+        Text(
+          "Petmedia Scanner",
+          style: GoogleFonts.sulphurPoint(
+              textStyle: TextStyle(fontSize: 30)),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Image(image: AssetImage('assets/image 2.png')),
+        ),
+      ],
+    );
+  }
+}
+
+
+class SelectImage extends StatefulWidget {
+  @override
+  _SelectImageState createState() => _SelectImageState();
+}
+
+class _SelectImageState extends State<SelectImage> {
+  File _image;
+
+  ImagePicker imagePicker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await imagePicker.getImage(source:ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null){
+        _image = File(pickedFile.path);
+        print(_image);
+      } else{
+        print('No image selected');
+      }
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        getImage();
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 24.0),
+        child: Container(
+            child: _image == null? Image(
+                image: AssetImage('assets/image 3.png')
+
+            ) : Image.file(_image
+            , height: 200, width: 500,)
+        ),
+
       ),
     );
   }

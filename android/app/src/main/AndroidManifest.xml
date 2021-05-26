@@ -2,7 +2,9 @@
     package="com.petmedia.petmedia_scanner">
    <application
         android:label="petmedia_scanner"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
